@@ -1,0 +1,11 @@
+{
+  "name": "sunsetapichallenge",
+  "version": "1.0.0",
+  "description": "Get the sunrise and sunset times for a given city",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "brendanpschreiner@gmail.com",
+  "license": "ISC"
+}
