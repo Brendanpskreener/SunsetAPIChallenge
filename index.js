@@ -1,10 +1,9 @@
 import * as dotenv from 'dotenv'
+import getParsedArgs from './args.js';
 dotenv.config()
 import got from 'got';
 
-//Add feature to pass in city/state from the terminal
-
-async function getLatLong (city, state, country = 'US') {
+async function getLatLong (city, state, country) {
     const { API_NINJA_URL, API_NINJA_API_KEY} = process.env
     const options = {
         headers: {
@@ -40,10 +39,16 @@ async function getSunriseSunset (latitude, longitude) {
     }
 }
 
+const { city, state, country = "US" } = getParsedArgs()
 try {
-    const latLong = await getLatLong('Portland', 'Oregon')
+    const latLong = await getLatLong(city, state, country)
     const sunTime = await getSunriseSunset(latLong.latitude, latLong.longitude)
     console.log(sunTime)
 } catch (error) {
-    console.error(error)
+    if (error?.response?.statusCode) {
+        const { statusCode, statusMessage } = error?.response || {};
+        console.error( 'error fetching sunrise-sunset data:', statusCode, statusMessage)
+    } else {
+        console.error('error fetching sunrise-sunset data', error)
+    }
 }
